@@ -1,5 +1,7 @@
 {
   "name": "async-express",
+  "description": "The companion code for https://robrich.org/slides/async-await-node-express/#/",
+  "author": "Rob Richardson (https://robrich.org/)",
   "version": "0.0.0",
   "private": true,
   "main": "bin/www",
@@ -7,7 +9,7 @@
     "start": "node ./bin/www",
     "watch": "nodemon ./bin/www"
   },
-  "module": "bin/main.js",
+  "module": "bin/start.mjs",
   "license": "MIT",
   "dependencies": {
     "esm": "^3.0.84",
@@ -19,6 +21,8 @@
   },
   "devDependencies": {
     "@types/express": "^4.16.0",
+    "@types/hbs": "^4.0.0",
+    "@types/http-errors": "^1.6.1",
     "@types/morgan": "^1.7.35",
     "@types/node-sass-middleware": "0.0.30",
     "nodemon": "^1.18.4"
