@@ -12,7 +12,7 @@ const work = new Work();
 router.get('/a', async function(req, res, next) {
   try {
     await work.resolves();
-    res.send('it worked');
+    res.render('results', {message: 'it worked'});
   } catch (err) {
     next(err);
   }
@@ -21,7 +21,7 @@ router.get('/a', async function(req, res, next) {
 router.get('/b', async function(req, res, next) {
   try {
     await work.rejects();
-    res.send('it handles rejected promises');
+    res.render('results', {message: 'it handles rejected promises'});
   } catch (err) {
     next(err);
   }
@@ -30,7 +30,7 @@ router.get('/b', async function(req, res, next) {
 router.get('/c', async function(req, res, next) {
   try {
     await work.throws();
-    res.send('it handles rejected promises');
+    res.render('results', {message: 'it handles rejected promises'});
   } catch (err) {
     next(err);
   }

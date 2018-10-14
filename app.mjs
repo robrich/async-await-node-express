@@ -1,12 +1,16 @@
-import createError from 'http-errors';
 import express from 'express';
-import path from 'path';
+import createError from 'http-errors';
 import logger from 'morgan';
 import sassMiddleware from 'node-sass-middleware';
+import path from 'path';
 
 import indexRouter from './routes/index.mjs';
 import oneRouter from './routes/one.mjs';
 import twoRouter from './routes/two.mjs';
+import threeRouter from './routes/three.mjs';
+import fourRouter from './routes/four.mjs';
+//import fiveRouter from './routes/five.mjs';
+// FRAGILE: can only use four or five as both monkey-patch `express.Router`
 
 // compensate for no __dirname, https://stackoverflow.com/a/50052194/702931
 let dirname = path.dirname(decodeURI(new URL(import.meta.url).pathname));
@@ -36,24 +40,31 @@ app.use(express.static(path.join(dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/one', oneRouter);
 app.use('/two', twoRouter);
+app.use('/three', threeRouter);
+app.use('/four', fourRouter);
+//app.use('/five', fiveRouter);
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   next(createError(404));
 });
 
-// error handler: must have 4 parameters
-app.use(function(err, req, res, _next) {
+app.use(function (err, req, res, next) {
+  /*eslint no-unused-vars:0 */
+  // because express error handler: must have 4 parameters
+
   if (typeof err !== 'object') {
     err = {
       message: err
     };
   }
-  // set locals, only providing error in development
+
+  // ASSUME: err.message doesn't expose internals
   res.locals.message = err.message || 'error';
+
+  // only leak details in development
   res.locals.error = req.app.get('env') === 'development' ? err : {};
 
-  // render the error page
   res.status(err.status || 500);
   res.render('error', {title: 'Error'});
 });
