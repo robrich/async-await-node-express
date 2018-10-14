@@ -1,0 +1,22 @@
+{
+  "name": "async-express",
+  "version": "0.0.0",
+  "private": true,
+  "main": "bin/www",
+  "scripts": {
+    "start": "node ./bin/www"
+  },
+  "module": "bin/main.js",
+  "license": "MIT",
+  "dependencies": {
+    "@types/morgan": "^1.7.35",
+    "@types/node-sass-middleware": "0.0.30",
+    "cookie-parser": "~1.4.3",
+    "ejs": "~2.5.7",
+    "esm": "^3.0.84",
+    "express": "~4.16.0",
+    "http-errors": "~1.6.2",
+    "morgan": "~1.9.0",
+    "node-sass-middleware": "0.11.0"
+  }
+}
