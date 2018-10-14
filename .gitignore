@@ -63,4 +63,8 @@ typings/
 # lock files
 package-lock.json
 yarn.lock
+
+# more files
 .vscode
+/public/**/*.css
+/public/**/*.map

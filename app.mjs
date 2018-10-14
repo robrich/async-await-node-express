@@ -1,7 +1,6 @@
 import createError from 'http-errors';
 import express from 'express';
 import path from 'path';
-import cookieParser from 'cookie-parser';
 import logger from 'morgan';
 import sassMiddleware from 'node-sass-middleware';
 
@@ -21,16 +20,15 @@ export const app = express();
 
 // view engine setup
 app.set('views', path.join(dirname, 'views'));
-app.set('view engine', 'ejs');
+app.set('view engine', 'hbs');
 
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
 app.use(sassMiddleware({
   src: path.join(dirname, 'public'),
   dest: path.join(dirname, 'public'),
-  indentedSyntax: true, // true = .sass and false = .scss
+  indentedSyntax: false, // true = .sass and false = .scss
   sourceMap: true
 }));
 app.use(express.static(path.join(dirname, 'public')));
@@ -46,11 +44,16 @@ app.use(function(req, res, next) {
 
 // error handler: must have 4 parameters
 app.use(function(err, req, res, _next) {
+  if (typeof err !== 'object') {
+    err = {
+      message: err
+    };
+  }
   // set locals, only providing error in development
-  res.locals.message = (err && err.message ? err.message : err) || 'error';
+  res.locals.message = err.message || 'error';
   res.locals.error = req.app.get('env') === 'development' ? err : {};
 
   // render the error page
   res.status(err.status || 500);
-  res.render('error');
+  res.render('error', {title: 'Error'});
 });
