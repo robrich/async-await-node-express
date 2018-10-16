@@ -9,6 +9,14 @@ const work = new Work();
 
 // make sure you call wrapit, it's easy to miss
 
+function wrapit(func) {
+  return function(req, res, next) {
+    func(req, res)
+      .catch(next);
+  };
+}
+//const wrapit = func => (req, res, next) => func(req, res).catch(next);
+
 router.get('/a', wrapit(async function(req, res) {
   await work.resolves();
   res.render('results', {message: 'it works'});
@@ -28,9 +36,3 @@ router.get('/d', async function(req, res) {
   await work.throws();
   res.render('results', {message: 'oops, forgot to wrap this one'});
 });
-
-function wrapit(func) {
-  return function(req, res, next) {
-    func(req, res).catch(next);
-  };
-}

@@ -34,13 +34,14 @@ function patchRouter() {
   express.__orig_Router = express.__orig_Router || express.Router;
   express.Router = function () {
     const router = express.__orig_Router();
-    router.get = patchit(router, 'get');
-    router.post = patchit(router, 'post');
+    patchit(router, 'get');
+    patchit(router, 'post');
     /* ...
     make sure you get them all:
+    router.head
+    router.options
     router.use
     router.all
-    router.head
     router.param
     // see https://github.com/jshttp/methods/blob/master/index.js
     */
@@ -50,7 +51,7 @@ function patchRouter() {
 function patchit(router, method) {
   const origMethod = router[method];
   router['__orig_'+method] = origMethod;
-  return function (path, ...fns) {
+  router[method] = function (path, ...fns) {
     const wrapped = fns.map(wrapit);
     origMethod.call(router, path, ...wrapped);
   };
